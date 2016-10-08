@@ -1,4 +1,4 @@
-/*****************************************************************************
+﻿/*****************************************************************************
  * relationships - A library for creating Excel XLSX relationships files.
  *
  * Used in conjunction with the libxlsxwriter library.

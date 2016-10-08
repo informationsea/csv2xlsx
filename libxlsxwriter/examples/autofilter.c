@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Example of adding an autofilter to a worksheet in Excel using
  * libxlsxwriter.
  *

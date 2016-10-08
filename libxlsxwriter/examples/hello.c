@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Example of writing some data to a simple Excel file using libxlsxwriter.
  *
  * Copyright 2014-2016, John McNamara, jmcnamara@cpan.org

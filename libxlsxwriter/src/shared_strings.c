@@ -1,4 +1,4 @@
-/*****************************************************************************
+﻿/*****************************************************************************
  * shared_strings - A library for creating Excel XLSX sst files.
  *
  * Used in conjunction with the libxlsxwriter library.

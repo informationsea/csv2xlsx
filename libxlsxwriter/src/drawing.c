@@ -1,4 +1,4 @@
-/*****************************************************************************
+﻿/*****************************************************************************
  * drawing - A library for creating Excel XLSX drawing files.
  *
  * Used in conjunction with the libxlsxwriter library.

@@ -1,4 +1,4 @@
-/*****************************************************************************
+﻿/*****************************************************************************
  * custom - A library for creating Excel custom property files.
  *
  * Used in conjunction with the libxlsxwriter library.

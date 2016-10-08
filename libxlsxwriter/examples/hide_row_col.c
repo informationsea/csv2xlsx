@@ -1,4 +1,4 @@
-/*
+﻿/*
  * An example of how to hide rows and columns using the libxlsxwriter
  * library.
  *

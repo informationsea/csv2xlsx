@@ -1,4 +1,4 @@
-lib_LTLIBRARIES = libminizip.la
+﻿lib_LTLIBRARIES = libminizip.la
 
 if COND_DEMOS
 bin_PROGRAMS = miniunzip minizip

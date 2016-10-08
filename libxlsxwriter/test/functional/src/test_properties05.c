@@ -1,4 +1,4 @@
-/*****************************************************************************
+﻿/*****************************************************************************
  * Test cases for libxlsxwriter.
  *
  * Test to compare output against Excel files.
@@ -14,7 +14,7 @@ int main() {
     lxw_workbook  *workbook  = new_workbook("test_properties05.xlsx");
     lxw_worksheet *worksheet = workbook_add_worksheet(workbook, NULL);
 
-    workbook_set_custom_property_string  (workbook, "Location", "Café");
+    workbook_set_custom_property_string  (workbook, "Location", "Caf辿");
 
     worksheet_set_column(worksheet, 0, 0, 70, NULL);
     worksheet_write_string(worksheet, CELL("A1"), "Select 'Office Button -> Prepare -> Properties' to see the file properties." , NULL);

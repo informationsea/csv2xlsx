@@ -1,4 +1,4 @@
-/*
+﻿/*
  * This program shows several examples of how to set up headers and
  * footers with libxlsxwriter.
  *

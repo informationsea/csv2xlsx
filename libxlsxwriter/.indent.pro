@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Indent rules for libxlsxwriter.
  *
  * The rules for user defined typedefs can be update as follows:

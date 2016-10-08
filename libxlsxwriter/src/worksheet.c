@@ -1,4 +1,4 @@
-/*****************************************************************************
+﻿/*****************************************************************************
  * worksheet - A library for creating Excel XLSX worksheet files.
  *
  * Used in conjunction with the libxlsxwriter library.

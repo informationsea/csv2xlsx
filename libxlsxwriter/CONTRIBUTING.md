@@ -1,4 +1,4 @@
-# libxlsxwriter: Reporting Bugs and submitting Pull Requests
+﻿# libxlsxwriter: Reporting Bugs and submitting Pull Requests
 
 
 ## Reporting Bugs

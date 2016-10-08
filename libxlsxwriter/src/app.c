@@ -1,4 +1,4 @@
-/*****************************************************************************
+﻿/*****************************************************************************
  * app - A library for creating Excel XLSX app files.
  *
  * Used in conjunction with the libxlsxwriter library.

@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Example of writing some data with font formatting to a simple Excel
  * file using libxlsxwriter.
  *

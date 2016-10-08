@@ -1,4 +1,4 @@
-/*****************************************************************************
+﻿/*****************************************************************************
  * theme - A library for creating Excel XLSX theme files.
  *
  * Used in conjunction with the libxlsxwriter library.

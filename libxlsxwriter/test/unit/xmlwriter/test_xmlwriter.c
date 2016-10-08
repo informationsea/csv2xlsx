@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Tests for xmlwriter.
  *
  * Copyright 2014-2016, John McNamara, jmcnamara@cpan.org

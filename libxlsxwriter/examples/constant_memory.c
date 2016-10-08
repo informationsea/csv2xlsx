@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Example of using libxlsxwriter for writing large files in constant memory
  * mode.
  *

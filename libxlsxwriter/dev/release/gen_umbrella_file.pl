@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+﻿#!/usr/bin/perl
 
 #
 # Simple program to generate the coccoapods unbrella file.

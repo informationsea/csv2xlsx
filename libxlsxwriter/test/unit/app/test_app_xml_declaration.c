@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Tests for the libxlsxwriter library.
  *
  * Copyright 2014-2016, John McNamara, jmcnamara@cpan.org

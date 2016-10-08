@@ -1,4 +1,4 @@
-/*****************************************************************************
+﻿/*****************************************************************************
  * workbook - A library for creating Excel XLSX workbook files.
  *
  * Used in conjunction with the libxlsxwriter library.

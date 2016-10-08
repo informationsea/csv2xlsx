@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Anatomy of a simple libxlsxwriter program.
  *
  * Copyright 2014-2016, John McNamara, jmcnamara@cpan.org

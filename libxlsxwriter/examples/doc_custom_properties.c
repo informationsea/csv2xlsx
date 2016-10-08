@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Example of setting custom document properties for an Excel spreadsheet
  * using libxlsxwriter.
  *

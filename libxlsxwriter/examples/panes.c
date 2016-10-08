@@ -1,4 +1,4 @@
-/*
+﻿/*
  * A simple example using the libxlsxwriter library to create worksheets with
  * panes.
  *

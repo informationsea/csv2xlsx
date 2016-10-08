@@ -1,4 +1,4 @@
-#/bin/bash
+﻿#/bin/bash
 
 # Perform some minor clean-ups/fixes to the docs.
 

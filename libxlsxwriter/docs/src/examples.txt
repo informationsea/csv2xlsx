@@ -1,4 +1,4 @@
-##############################################################
+﻿##############################################################
 @example hello.c
 
 The simplest possible program and spreadsheet. This is a good place to start

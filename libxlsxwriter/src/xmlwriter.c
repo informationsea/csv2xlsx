@@ -1,4 +1,4 @@
-/*****************************************************************************
+﻿/*****************************************************************************
  * xmlwriter - A base library for libxlsxwriter libraries.
  *
  * Used in conjunction with the libxlsxwriter library.

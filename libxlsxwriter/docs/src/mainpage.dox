@@ -1,4 +1,4 @@
-/**
+﻿/**
 @mainpage Creating Excel files with C and libxlsxwriter
 
 <b>Libxlsxwriter</b> is a C library for creating Excel XLSX files.

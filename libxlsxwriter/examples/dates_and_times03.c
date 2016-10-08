@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Example of writing dates and times in Excel using different date formats.
  *
  * Copyright 2014-2016, John McNamara, jmcnamara@cpan.org

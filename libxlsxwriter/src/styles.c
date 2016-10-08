@@ -1,4 +1,4 @@
-/*****************************************************************************
+﻿/*****************************************************************************
  * styles - A library for creating Excel XLSX styles files.
  *
  * Used in conjunction with the libxlsxwriter library.

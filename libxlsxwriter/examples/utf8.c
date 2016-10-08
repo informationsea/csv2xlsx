@@ -1,4 +1,4 @@
-/*
+﻿/*
  * A simple Unicode UTF-8 example using libxlsxwriter.
  *
  * Note: The source file must be UTF-8 encoded.

@@ -1,4 +1,4 @@
-/*
+﻿/*
  * An example of creating Excel bar charts using the libxlsxwriter library.
  *
  * Copyright 2014-2016, John McNamara, jmcnamara@cpan.org

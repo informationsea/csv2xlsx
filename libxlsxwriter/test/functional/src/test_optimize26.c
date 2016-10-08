@@ -1,4 +1,4 @@
-/*****************************************************************************
+﻿/*****************************************************************************
  * Test cases for libxlsxwriter.
  *
  * Test case for writing data in optimization mode.
@@ -17,7 +17,7 @@ int main() {
     lxw_workbook  *workbook  = new_workbook_opt("test_optimize26.xlsx", &options);
     lxw_worksheet *worksheet = workbook_add_worksheet(workbook, NULL);
 
-    worksheet_write_string(worksheet, 2, 2, "café", NULL);
+    worksheet_write_string(worksheet, 2, 2, "caf辿", NULL);
 
     return workbook_close(workbook);
 }

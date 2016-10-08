@@ -1,4 +1,4 @@
-/* $Id: tmpfileplus.h $ */
+﻿/* $Id: tmpfileplus.h $ */
 /*
  * $Date: 2016-06-01 03:31Z $
  * $Revision: 2.0.0 $

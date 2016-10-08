@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+﻿#!/usr/bin/perl
 
 #
 # Simple program to arrange the example programs in a user defined order

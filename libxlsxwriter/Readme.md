@@ -1,4 +1,4 @@
-# libxlsxwriter
+﻿# libxlsxwriter
 
 
 Libxlsxwriter: A C library for creating Excel XLSX files.

@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+﻿#!/usr/bin/perl
 
 #
 # Simple program to generate the examples.dox file from a simple text file,

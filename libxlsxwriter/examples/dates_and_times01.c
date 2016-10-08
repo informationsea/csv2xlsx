@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Example of writing a dates and time in Excel using a number with date
  * formatting. This demonstrates that dates and times in Excel are just
  * formatted real numbers.

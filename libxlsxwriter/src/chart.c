@@ -1,4 +1,4 @@
-/*****************************************************************************
+﻿/*****************************************************************************
  * chart - A library for creating Excel XLSX chart files.
  *
  * Used in conjunction with the libxlsxwriter library.

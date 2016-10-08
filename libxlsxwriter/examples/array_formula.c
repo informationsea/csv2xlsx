@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Example of how to use the libxlsxwriter library to write simple
  * array formulas.
  *

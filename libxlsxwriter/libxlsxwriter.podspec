@@ -1,4 +1,4 @@
-Pod::Spec.new do |s|
+﻿Pod::Spec.new do |s|
   s.name                  = "libxlsxwriter"
   s.version               = "0.4.2"
   s.summary               = "Libxlsxwriter: A C library for creating Excel XLSX files."

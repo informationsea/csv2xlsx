@@ -1,4 +1,4 @@
-/*
+﻿/*
  * A simple example of some of the features of the libxlsxwriter library.
  *
  * Copyright 2014-2016, John McNamara, jmcnamara@cpan.org

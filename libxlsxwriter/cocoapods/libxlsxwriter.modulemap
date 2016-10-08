@@ -1,4 +1,4 @@
-framework module xlsxwriter {
+﻿framework module xlsxwriter {
   umbrella header "libxlsxwriter-umbrella.h"
   header "../xlsxwriter.h"
   

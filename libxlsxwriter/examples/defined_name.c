@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Example of how to create defined names using libxlsxwriter. This method is
  * used to define a user friendly name to represent a value, a single cell or
  * a range of cells in a workbook.

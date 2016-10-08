@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Example of cell locking and formula hiding in an Excel worksheet using
  * libxlsxwriter.
  *

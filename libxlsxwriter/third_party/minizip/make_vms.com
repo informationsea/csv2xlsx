@@ -1,4 +1,4 @@
-$ if f$search("ioapi.h_orig") .eqs. "" then copy ioapi.h ioapi.h_orig
+﻿$ if f$search("ioapi.h_orig") .eqs. "" then copy ioapi.h ioapi.h_orig
 $ open/write zdef vmsdefs.h
 $ copy sys$input: zdef
 $ deck

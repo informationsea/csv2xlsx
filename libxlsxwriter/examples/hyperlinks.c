@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Example of writing urls/hyperlinks with the libxlsxwriter library.
  *
  * Copyright 2014-2016, John McNamara, jmcnamara@cpan.org

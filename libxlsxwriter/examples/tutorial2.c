@@ -1,4 +1,4 @@
-/*
+﻿/*
  * A simple program to write some data to an Excel file using the
  * libxlsxwriter library.
  *

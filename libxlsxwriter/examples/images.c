@@ -1,4 +1,4 @@
-/*
+﻿/*
  * An example of inserting images into a worksheet using the libxlsxwriter
  * library.
  *

@@ -1,4 +1,4 @@
-#                                               -*- Autoconf -*-
+﻿#                                               -*- Autoconf -*-
 # Process this file with autoconf to produce a configure script.
 
 AC_INIT([minizip], [1.2.8], [bugzilla.redhat.com])

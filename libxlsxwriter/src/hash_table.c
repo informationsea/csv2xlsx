@@ -1,4 +1,4 @@
-/*****************************************************************************
+﻿/*****************************************************************************
  * hash_table - Hash table functions for libxlsxwriter.
  *
  * Used in conjunction with the libxlsxwriter library.

@@ -1,4 +1,4 @@
-/*****************************************************************************
+﻿/*****************************************************************************
  * core - A library for creating Excel XLSX core files.
  *
  * Used in conjunction with the libxlsxwriter library.

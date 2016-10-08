@@ -1,4 +1,4 @@
-/*
+﻿/*
  * An example showing all 48 default chart styles available in Excel 2007
  * using the libxlsxwriter library. Note, these styles are not the same as the
  * styles available in Excel 2013.

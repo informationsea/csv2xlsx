@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+﻿#!/usr/bin/perl
 
 #
 # Simple program to generate a Windows .def file from the exported symbols in

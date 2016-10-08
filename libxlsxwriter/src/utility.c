@@ -1,4 +1,4 @@
-/*****************************************************************************
+﻿/*****************************************************************************
  * utility - Utility functions for libxlsxwriter.
  *
  * Used in conjunction with the libxlsxwriter library.

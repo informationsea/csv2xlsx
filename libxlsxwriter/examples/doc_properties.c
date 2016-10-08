@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Example of setting document properties such as Author, Title, etc., for an
  * Excel spreadsheet using libxlsxwriter.
  *

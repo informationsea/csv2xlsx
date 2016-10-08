@@ -1,4 +1,4 @@
-/*****************************************************************************
+﻿/*****************************************************************************
  * content_types - A library for creating Excel XLSX content_types files.
  *
  * Used in conjunction with the libxlsxwriter library.

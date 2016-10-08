@@ -1,4 +1,4 @@
-/*****************************************************************************
+﻿/*****************************************************************************
  * format - A library for creating Excel XLSX format files.
  *
  * Used in conjunction with the libxlsxwriter library.
