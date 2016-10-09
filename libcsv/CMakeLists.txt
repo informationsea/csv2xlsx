@@ -1,0 +1,1 @@
+ADD_LIBRARY(libcsv libcsv.h libcsv.c)
