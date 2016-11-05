@@ -59,7 +59,7 @@ _open_zipfile_win32(const char *filename)
     /* Use the native Win32 file handling functions with minizip. */
     fill_win32_filefunc64(&filefunc);
 
-    return zipOpen2_64(wide_filename, 0, NULL, &filefunc);
+    return zipOpen2_64(filename, 0, NULL, &filefunc);
 }
 
 #endif

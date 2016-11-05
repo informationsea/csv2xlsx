@@ -7,4 +7,5 @@ TARGET_INCLUDE_DIRECTORIES(libcsv2xlsx PUBLIC ../libcsv ../libxlsxwriter/include
 TARGET_LINK_LIBRARIES(csv2xlsx libcsv libxlsx libcsv2xlsx zlib)
 
 ADD_TEST(NAME csv2xlsx COMMAND csv2xlsx ${CSV2Excel_SOURCE_DIR}/test/test1.csv test1.xlsx)
+ADD_TEST(NAME csv2xlsx_2 COMMAND csv2xlsx ${CSV2Excel_SOURCE_DIR}/csv2xlsx/genes.csv genes.xlsx)
 

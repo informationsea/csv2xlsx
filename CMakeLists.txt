@@ -1,20 +1,26 @@
 cmake_minimum_required(VERSION 3.0)
-project(CSV2Excel)
+project(CSV2Xlsx)
+enable_testing()
 
-ADD_LIBRARY(libxlsx  libxlsxwriter/src/app.c libxlsxwriter/src/chart.c 
-	libxlsxwriter/src/content_types.c libxlsxwriter/src/core.c
-	 libxlsxwriter/src/custom.c libxlsxwriter/src/drawing.c
-	 libxlsxwriter/src/format.c libxlsxwriter/src/hash_table.c
-	 libxlsxwriter/src/packager.c libxlsxwriter/src/relationships.c
-	 libxlsxwriter/src/shared_strings.c libxlsxwriter/src/styles.c
-	 libxlsxwriter/src/theme.c libxlsxwriter/src/utility.c
-	 libxlsxwriter/src/workbook.c libxlsxwriter/src/worksheet.c
-	 libxlsxwriter/src/xmlwriter.c)
-TARGET_INCLUDE_DIRECTORIES(libxlsx PUBLIC libxlsxwriter/include)
+ADD_SUBDIRECTORY(libcsv)
+ADD_SUBDIRECTORY(googletest)
 
-add_executable(csv2excel main.cpp)
+FILE(GLOB zlib_src ./zlib/*.c ./zlib/*.h)
+ADD_LIBRARY(zlib ${zlib_src})
 
-find_package(wxWidgets REQUIRED net gl core base)
-include(${wxWidgets_USE_FILE})
-# and for each of your dependent executable/library targets:
-target_link_libraries(csv2excel ${wxWidgets_LIBRARIES})
+FILE(GLOB libxlsx_src ./libxlsxwriter/src/*.c libxlsxwriter/include/*.h)
+ADD_LIBRARY(libxlsx 
+	${libxlsx_src}
+    libxlsxwriter/third_party/minizip/ioapi.c
+    libxlsxwriter/third_party/minizip/iowin32.c
+    libxlsxwriter/third_party/minizip/zip.c
+    libxlsxwriter/third_party/minizip/unzip.c
+    libxlsxwriter/third_party/minizip/mztools.c
+    libxlsxwriter/third_party/tmpfileplus/tmpfileplus.c
+	)
+TARGET_INCLUDE_DIRECTORIES(libxlsx PUBLIC libxlsxwriter/include zlib)
+
+ADD_SUBDIRECTORY(csv2xlsx)
+ADD_SUBDIRECTORY(csv2xlsx-gui)
+ADD_SUBDIRECTORY(test)
+
