@@ -17,3 +17,5 @@ if(WIN32)
    set_target_properties(csv2xlsx-gui PROPERTIES LINK_FLAGS_RELEASE "/SUBSYSTEM:WINDOWS")
    set_target_properties(csv2xlsx-gui PROPERTIES LINK_FLAGS_MINSIZEREL "/SUBSYSTEM:WINDOWS")
 endif(WIN32)
+
+install(TARGETS csv2xlsx-gui RUNTIME DESTINATION bin)
