@@ -1,4 +1,4 @@
-add_executable(csv2xlsx-gui main.cpp ConvertThread.cpp ConvertThread.hpp)
+add_executable(csv2xlsx-gui main.cpp)
 
 find_package(wxWidgets REQUIRED net gl core base)
 include(${wxWidgets_USE_FILE})
