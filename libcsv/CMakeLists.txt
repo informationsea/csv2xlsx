@@ -1,1 +1,2 @@
-ADD_LIBRARY(libcsv libcsv.h libcsv.c)
+add_library(libcsv libcsv.h libcsv.c)
+target_include_directories(libcsv PUBLIC .)

@@ -4,25 +4,22 @@ enable_testing()
 
 ADD_SUBDIRECTORY(libcsv)
 ADD_SUBDIRECTORY(googletest)
+ADD_SUBDIRECTORY(libxlsxwriter)
 
-FILE(GLOB zlib_src ./zlib/*.c ./zlib/*.h)
-ADD_LIBRARY(zlib ${zlib_src})
+ADD_LIBRARY(libcsv2xlsx csv2xlsx/libcsv2xlsx.c csv2xlsx/libcsv2xlsx.h)
+TARGET_INCLUDE_DIRECTORIES(libcsv2xlsx PUBLIC libcsv libxlsxwriter/include)
+TARGET_LINK_LIBRARIES(libcsv2xlsx PRIVATE libcsv xlsxwriter)
 
-FILE(GLOB libxlsx_src ./libxlsxwriter/src/*.c libxlsxwriter/include/*.h)
-ADD_LIBRARY(libxlsx 
-	${libxlsx_src}
-    libxlsxwriter/third_party/minizip/ioapi.c
-    libxlsxwriter/third_party/minizip/iowin32.c
-    libxlsxwriter/third_party/minizip/zip.c
-    libxlsxwriter/third_party/minizip/unzip.c
-    libxlsxwriter/third_party/minizip/mztools.c
-    libxlsxwriter/third_party/tmpfileplus/tmpfileplus.c
-	)
-TARGET_INCLUDE_DIRECTORIES(libxlsx PUBLIC libxlsxwriter/include zlib)
+ADD_EXECUTABLE(csv2xlsx csv2xlsx/csv2xlsx.c)
+TARGET_INCLUDE_DIRECTORIES(libcsv2xlsx PUBLIC libcsv libxlsxwriter/include)
+TARGET_LINK_LIBRARIES(csv2xlsx PRIVATE libcsv2xlsx)
 
-ADD_SUBDIRECTORY(csv2xlsx)
-ADD_SUBDIRECTORY(csv2xlsx-gui)
-ADD_SUBDIRECTORY(test)
+#FILE(GLOB zlib_src ./zlib/*.c ./zlib/*.h)
+#ADD_LIBRARY(zlib ${zlib_src})
+
+#ADD_SUBDIRECTORY(csv2xlsx)
+#ADD_SUBDIRECTORY(csv2xlsx-gui)
+#ADD_SUBDIRECTORY(test)
 
 install(FILES README.md LICENSE DESTINATION .)
 
