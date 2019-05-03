@@ -1,4 +1,4 @@
-add_subdirectory(googletest)
+#add_subdirectory(googletest)
 
 # zlib
 add_subdirectory(zlib)
@@ -22,4 +22,4 @@ target_sources(xlsxwriter
     PUBLIC ${LXW_HEADERS}
 )
 target_include_directories(xlsxwriter PUBLIC libxlsxwriter/include zlib ${CMAKE_CURRENT_BINARY_DIR}/zlib)
-target_link_libraries(xlsxwriter PRIVATE zlib)
+target_link_libraries(xlsxwriter PRIVATE zlibstatic)

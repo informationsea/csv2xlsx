@@ -9,6 +9,7 @@ install_manifest.txt
 CTestTestfile.cmake
 CPackConfig.cmake
 CPackSourceConfig.cmake
+Testing/
 
 ## C++
 
@@ -46,4 +47,11 @@ CPackSourceConfig.cmake
 *.app
 
 # Excel Files
-test/*.xlsx
+*.xlsx
+
+# VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
