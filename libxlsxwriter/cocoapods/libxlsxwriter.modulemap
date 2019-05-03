@@ -1,7 +1,0 @@
-﻿framework module xlsxwriter {
-  umbrella header "libxlsxwriter-umbrella.h"
-  header "../xlsxwriter.h"
-  
-  export *
-  module * { export * }
-}
