@@ -1,4 +1,9 @@
-#add_subdirectory(googletest)
+# Google test is included from libcsv
+
+# Argtable3
+file(GLOB ARGTABLE3_SRC argtable3/src/*.c argtable3/src/*.h)
+add_library(argtable3 STATIC ${ARGTABLE3_SRC})
+target_include_directories(argtable3 PUBLIC argtable3/src/)
 
 # zlib
 add_subdirectory(zlib)

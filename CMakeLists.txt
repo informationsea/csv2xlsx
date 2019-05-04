@@ -6,15 +6,20 @@ ADD_SUBDIRECTORY(libcsv)
 ADD_SUBDIRECTORY(thirdparty)
 
 ADD_LIBRARY(libcsv2xlsx csv2xlsx/libcsv2xlsx.c csv2xlsx/libcsv2xlsx.h)
-TARGET_INCLUDE_DIRECTORIES(libcsv2xlsx PUBLIC libcsv libxlsxwriter/include)
+TARGET_INCLUDE_DIRECTORIES(libcsv2xlsx PUBLIC libcsv thirdparty/libxlsxwriter/include)
 TARGET_LINK_LIBRARIES(libcsv2xlsx PRIVATE csv xlsxwriter)
 
 ADD_EXECUTABLE(csv2xlsx csv2xlsx/csv2xlsx.c)
-TARGET_INCLUDE_DIRECTORIES(libcsv2xlsx PUBLIC libcsv libxlsxwriter/include)
-TARGET_LINK_LIBRARIES(csv2xlsx PRIVATE libcsv2xlsx)
+TARGET_INCLUDE_DIRECTORIES(libcsv2xlsx PUBLIC libcsv thirdparty/libxlsxwriter/include)
+TARGET_LINK_LIBRARIES(csv2xlsx PRIVATE libcsv2xlsx argtable3)
 
-ADD_TEST(NAME csv2xlsx COMMAND csv2xlsx ${CMAKE_CURRENT_SOURCE_DIR}/libcsv/test/test1.csv test1.xlsx)
-ADD_TEST(NAME csv2xlsx_2 COMMAND csv2xlsx ${CMAKE_CURRENT_SOURCE_DIR}/csv2xlsx/genes.csv genes.xlsx)
+ADD_TEST(NAME csv2xlsx COMMAND csv2xlsx ${CMAKE_CURRENT_SOURCE_DIR}/libcsv/test/test1.csv -o test1.xlsx)
+ADD_TEST(NAME csv2xlsx_2 COMMAND csv2xlsx ${CMAKE_CURRENT_SOURCE_DIR}/csv2xlsx/genes.csv -o genes.xlsx)
+
+add_executable(test-libcsv2xlsx csv2xlsx/test/test-libcsv2xlsx.cpp)
+add_test(NAME test-libcsv2xlsx COMMAND test-libcsv2xlsx)
+target_link_libraries(test-libcsv2xlsx PRIVATE gtest_main libcsv2xlsx)
+target_include_directories(test-libcsv2xlsx PRIVATE csv2xlsx thirdparty/libxlsxwriter/include)
 
 #FILE(GLOB zlib_src ./zlib/*.c ./zlib/*.h)
 #ADD_LIBRARY(zlib ${zlib_src})
