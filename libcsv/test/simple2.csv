@@ -1,5 +1,5 @@
 Header 1,Header 2
-12,01
+12,"01"
 "hello, world",ok
 
 "quote "" included",ng
