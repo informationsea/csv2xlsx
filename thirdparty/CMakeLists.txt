@@ -1,30 +1,61 @@
-# Google test is included from libcsv
+# Google test
+include(ExternalProject)
+ExternalProject_Add(
+    googletest
+    URL https://github.com/google/googletest/archive/release-1.8.1.zip
+    CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${CMAKE_CURRENT_BINARY_DIR}/googletest-install -Dgtest_force_shared_crt=true
+    INSTALL_DIR ${CMAKE_CURRENT_BINARY_DIR}/googletest-install
+)
+add_library(gtest STATIC IMPORTED GLOBAL)
+set_target_properties(gtest PROPERTIES IMPORTED_LOCATION ${CMAKE_CURRENT_BINARY_DIR}/googletest-install/lib/${CMAKE_STATIC_LIBRARY_PREFIX}gtest${CMAKE_STATIC_LIBRARY_SUFFIX})
+set_target_properties(gtest PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_CURRENT_BINARY_DIR}/googletest-install/include)
+add_dependencies(gtest googletest)
+
+add_library(gtest_main STATIC IMPORTED GLOBAL)
+set_target_properties(gtest_main PROPERTIES IMPORTED_LOCATION ${CMAKE_CURRENT_BINARY_DIR}/googletest-install/lib/${CMAKE_STATIC_LIBRARY_PREFIX}gtest_main${CMAKE_STATIC_LIBRARY_SUFFIX})
+set_target_properties(gtest_main PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_CURRENT_BINARY_DIR}/googletest-install/include)
+set_target_properties(gtest_main PROPERTIES IMPORTED_LINK_INTERFACE_LIBRARIES gtest)
+add_dependencies(gtest_main googletest)
+
+# Zlib
+ExternalProject_Add(
+    zlib
+    URL https://github.com/madler/zlib/archive/v1.2.11.zip
+    CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${CMAKE_CURRENT_BINARY_DIR}/zlib-install 
+    INSTALL_DIR ${CMAKE_CURRENT_BINARY_DIR}/zlib-install
+)
+add_library(zlibstatic STATIC IMPORTED GLOBAL)
+set_target_properties(zlibstatic PROPERTIES IMPORTED_LOCATION ${CMAKE_CURRENT_BINARY_DIR}/zlib-install/lib/${CMAKE_STATIC_LIBRARY_PREFIX}zlibstatic${CMAKE_STATIC_LIBRARY_SUFFIX})
+set_target_properties(zlibstatic PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_CURRENT_BINARY_DIR}/zlib-install/include)
+add_dependencies(zlibstatic zlib)
 
 # Argtable3
-file(GLOB ARGTABLE3_SRC argtable3/src/*.c argtable3/src/*.h)
-add_library(argtable3 STATIC ${ARGTABLE3_SRC})
-target_include_directories(argtable3 PUBLIC argtable3/src/)
+ExternalProject_Add(
+    argtable3_upstream
+    PREFIX ${CMAKE_CURRENT_BINARY_DIR}/argtable3-prefix
+    URL https://github.com/argtable/argtable3/archive/v3.1.2.bb37058.tar.gz
+    CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${CMAKE_CURRENT_BINARY_DIR}/argtable3-install 
+    BUILD_COMMAND ${CMAKE_COMMAND} --build . --target argtable3_static
+    INSTALL_COMMAND ""
+    INSTALL_DIR ${CMAKE_CURRENT_BINARY_DIR}/argtable3-install
+)
 
-# zlib
-add_subdirectory(zlib)
+add_library(argtable3 STATIC IMPORTED GLOBAL)
+set_target_properties(argtable3 PROPERTIES IMPORTED_LOCATION ${CMAKE_CURRENT_BINARY_DIR}/argtable3-prefix/src/argtable3_upstream-build/src/${CMAKE_STATIC_LIBRARY_PREFIX}argtable3_static${CMAKE_STATIC_LIBRARY_SUFFIX})
+set_target_properties(argtable3 PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_CURRENT_BINARY_DIR}/argtable3-prefix/src/argtable3_upstream/src)
+add_dependencies(argtable3 argtable3_upstream)
 
 # xlsxwriter
-file(GLOB LXW_SOURCES libxlsxwriter/src/*.c)
-file(GLOB_RECURSE LXW_HEADERS RELATIVE libxlsxwriter/include *.h)
-list(APPEND LXW_SOURCES libxlsxwriter/third_party/minizip/ioapi.c libxlsxwriter/third_party/minizip/zip.c)
-if(MSVC)
-    list(APPEND LXW_SOURCES libxlsxwriter/third_party/minizip/iowin32.c)
-    set(CMAKE_C_FLAGS "/source-charset:utf-8")
-endif()
-
-list(APPEND LXW_SOURCES libxlsxwriter/third_party/tmpfileplus/tmpfileplus.c)
-
-#set(LXW_PROJECT_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
-#set(LXW_LIB_DIR "${LXW_PROJECT_DIR}/lib")
-add_library(xlsxwriter "")
-target_sources(xlsxwriter
-    PRIVATE ${LXW_SOURCES}
-    PUBLIC ${LXW_HEADERS}
+ExternalProject_Add(
+    xlsxwriter_upstream
+    PREFIX ${CMAKE_CURRENT_BINARY_DIR}/xlsxwriter-prefix
+    URL https://github.com/jmcnamara/libxlsxwriter/archive/RELEASE_0.8.6.tar.gz
+    CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${CMAKE_CURRENT_BINARY_DIR}/xlsxwriter-install -DZLIB_INLUCD_DIR=${CMAKE_CURRENT_BINARY_DIR}/zlib-install/include -DZLIB_LIBRARY=${CMAKE_CURRENT_BINARY_DIR}/zlib-install/lib/${CMAKE_STATIC_LIBRARY_PREFIX}zlibstatic${CMAKE_STATIC_LIBRARY_SUFFIX}
+    INSTALL_DIR ${CMAKE_CURRENT_BINARY_DIR}/xlsxwriter-install
 )
-target_include_directories(xlsxwriter PUBLIC libxlsxwriter/include zlib ${CMAKE_CURRENT_BINARY_DIR}/zlib)
-target_link_libraries(xlsxwriter PRIVATE zlibstatic)
+add_library(xlsxwriter STATIC IMPORTED GLOBAL)
+set_target_properties(xlsxwriter PROPERTIES IMPORTED_LOCATION ${CMAKE_CURRENT_BINARY_DIR}/xlsxwriter-install/lib/${CMAKE_STATIC_LIBRARY_PREFIX}xlsxwriter${CMAKE_STATIC_LIBRARY_SUFFIX})
+set_target_properties(xlsxwriter PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_CURRENT_BINARY_DIR}/xlsxwriter-install/include)
+set_target_properties(xlsxwriter PROPERTIES IMPORTED_LINK_INTERFACE_LIBRARIES zlibstatic)
+add_dependencies(xlsxwriter_upstream zlib)
+add_dependencies(xlsxwriter xlsxwriter_upstream)

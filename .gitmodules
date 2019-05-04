@@ -1,9 +1,0 @@
-[submodule "libxlsxwriter"]
-	path = thirdparty/libxlsxwriter
-	url = https://github.com/jmcnamara/libxlsxwriter.git
-[submodule "thirdparty/zlib"]
-	path = thirdparty/zlib
-	url = https://github.com/madler/zlib.git
-[submodule "thirdparty/argtable3"]
-	path = thirdparty/argtable3
-	url = https://github.com/argtable/argtable3.git

@@ -1,8 +1,6 @@
 add_library(csv libcsv.h libcsv.c)
 target_include_directories(csv PUBLIC .)
 
-add_subdirectory(../thirdparty/googletest googletest)
-
 ADD_EXECUTABLE(test_libcsv test/test_libcsv.cpp test/test1.csv)
 TARGET_LINK_LIBRARIES(test_libcsv csv gtest_main)
 
