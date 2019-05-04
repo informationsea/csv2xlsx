@@ -13,7 +13,7 @@ ADD_EXECUTABLE(csv2xlsx src/csv2xlsx.c)
 TARGET_LINK_LIBRARIES(csv2xlsx PRIVATE libcsv2xlsx argtable3)
 
 ADD_TEST(NAME csv2xlsx COMMAND csv2xlsx ${CMAKE_CURRENT_SOURCE_DIR}/libcsv/test/test1.csv -o test1.xlsx)
-ADD_TEST(NAME csv2xlsx_2 COMMAND csv2xlsx ${CMAKE_CURRENT_SOURCE_DIR}/csv2xlsx/genes.csv -o genes.xlsx)
+ADD_TEST(NAME csv2xlsx_2 COMMAND csv2xlsx ${CMAKE_CURRENT_SOURCE_DIR}/src/genes.csv -o genes.xlsx)
 
 add_executable(test-libcsv2xlsx src/test/test-libcsv2xlsx.cpp)
 add_test(NAME test-libcsv2xlsx COMMAND test-libcsv2xlsx)

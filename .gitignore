@@ -10,6 +10,7 @@ CTestTestfile.cmake
 CPackConfig.cmake
 CPackSourceConfig.cmake
 Testing/
+_CPack_Packages/
 
 ## C++
 
