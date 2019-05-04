@@ -50,7 +50,7 @@ ExternalProject_Add(
     xlsxwriter_upstream
     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/xlsxwriter-prefix
     URL https://github.com/jmcnamara/libxlsxwriter/archive/RELEASE_0.8.6.tar.gz
-    CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${CMAKE_CURRENT_BINARY_DIR}/xlsxwriter-install -DZLIB_INLUCD_DIR=${CMAKE_CURRENT_BINARY_DIR}/zlib-install/include -DZLIB_LIBRARY=${CMAKE_CURRENT_BINARY_DIR}/zlib-install/lib/${CMAKE_STATIC_LIBRARY_PREFIX}zlibstatic${CMAKE_STATIC_LIBRARY_SUFFIX}
+    CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${CMAKE_CURRENT_BINARY_DIR}/xlsxwriter-install -DZLIB_INCLUDE_DIR=${CMAKE_CURRENT_BINARY_DIR}/zlib-install/include -DZLIB_LIBRARY=${CMAKE_CURRENT_BINARY_DIR}/zlib-install/lib/${CMAKE_STATIC_LIBRARY_PREFIX}zlibstatic${CMAKE_STATIC_LIBRARY_SUFFIX}
     INSTALL_DIR ${CMAKE_CURRENT_BINARY_DIR}/xlsxwriter-install
 )
 add_library(xlsxwriter STATIC IMPORTED GLOBAL)

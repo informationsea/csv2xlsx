@@ -6,11 +6,12 @@ ADD_SUBDIRECTORY(thirdparty)
 ADD_SUBDIRECTORY(libcsv)
 
 ADD_LIBRARY(libcsv2xlsx src/libcsv2xlsx.c src/libcsv2xlsx.h)
-TARGET_INCLUDE_DIRECTORIES(libcsv2xlsx PUBLIC libcsv thirdparty/libxlsxwriter/include)
+TARGET_INCLUDE_DIRECTORIES(libcsv2xlsx PUBLIC libcsv)
 TARGET_LINK_LIBRARIES(libcsv2xlsx PRIVATE csv xlsxwriter)
 
 ADD_EXECUTABLE(csv2xlsx src/csv2xlsx.c)
-TARGET_LINK_LIBRARIES(csv2xlsx PRIVATE libcsv2xlsx argtable3)
+TARGET_LINK_LIBRARIES(csv2xlsx PRIVATE libcsv2xlsx argtable3 xlsxwriter)
+install(TARGETS csv2xlsx RUNTIME DESTINATION bin)
 
 ADD_TEST(NAME csv2xlsx COMMAND csv2xlsx ${CMAKE_CURRENT_SOURCE_DIR}/libcsv/test/test1.csv -o test1.xlsx)
 ADD_TEST(NAME csv2xlsx_2 COMMAND csv2xlsx ${CMAKE_CURRENT_SOURCE_DIR}/src/genes.csv -o genes.xlsx)
