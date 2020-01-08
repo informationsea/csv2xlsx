@@ -4,8 +4,8 @@ jobs:
     -
       dist: bionic
       os: linux
+      before_install:
+        - sudo apt-get install libz-dev
     -
       os: osx
-before_install:
-  - sudo apt-get install libz-dev
 script: "mkdir -p build && cd build && cmake .. && make && make test"

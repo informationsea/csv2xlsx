@@ -24,6 +24,6 @@ link_directories(${CMAKE_CURRENT_BINARY_DIR}/external/zlib-install/lib)
 
 else()
 
-find_package(ZLIB)
+find_package(ZLIB REQUIRED)
 
 endif()

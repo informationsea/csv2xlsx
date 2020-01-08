@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 3.4)
-project(CSV2Xlsx C CXX)
+project(csv2xlsx C CXX)
+
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_C_STANDARD 99)
 
@@ -16,10 +17,11 @@ ADD_LIBRARY(libcsv2xlsx src/libcsv2xlsx.c src/libcsv2xlsx.h)
 add_dependencies(libcsv2xlsx libxlsxwriter argtable3)
 TARGET_INCLUDE_DIRECTORIES(libcsv2xlsx PUBLIC libcsv ${LIBXLSXWRITER_INCLUDE_DIRS} ${ARGTABLE3_INCLUDE_DIRS} ${ZLIB_INCLUDE_DIRS})
 #print("libxlsx" ${LIBXLSXWRITER_INCLUDE_DIRS})
-TARGET_LINK_LIBRARIES(libcsv2xlsx PRIVATE csv xlsxwriter)
+TARGET_LINK_LIBRARIES(libcsv2xlsx PRIVATE csv ${LIBXLSXWRITER_LIBRARY} ${ZLIB_LIBRARIES})
 
 ADD_EXECUTABLE(csv2xlsx src/csv2xlsx.c)
-TARGET_LINK_LIBRARIES(csv2xlsx PRIVATE libcsv2xlsx ${ARGTABLE3_LIBRARY} ${ARGTABLE3_LIBRARY} ${ZLIB_LIBRARIES})
+message(STATUS "zlib ${ZLIB_LIBRARIES}")
+TARGET_LINK_LIBRARIES(csv2xlsx PUBLIC libcsv2xlsx ${ARGTABLE3_LIBRARY} ${ARGTABLE3_LIBRARY})
 install(TARGETS csv2xlsx RUNTIME DESTINATION bin)
 
 ADD_TEST(NAME csv2xlsx COMMAND csv2xlsx ${CMAKE_CURRENT_SOURCE_DIR}/libcsv/test/test1.csv -o test1.xlsx)
