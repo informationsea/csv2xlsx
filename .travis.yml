@@ -7,5 +7,23 @@ jobs:
       before_install:
         - sudo apt-get install libz-dev
     -
+      dist: trusty
+      os: linux
+      before_install:
+        - sudo apt-get install libz-dev
+    -
+      dist: xenial
+      os: linux
+      before_install:
+        - sudo apt-get install libz-dev
+    -
+      dist: xenial
+      os: linux
+      before_install:
+        - sudo apt-get install libz-dev
+    -
       os: osx
-script: "mkdir -p build && cd build && cmake .. && make && make test"
+    -
+      os: windows 
+
+script: "mkdir -p build && cd build && cmake .. && make && make test && make package"
