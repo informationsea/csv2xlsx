@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.4)
-project(csv2xlsx C CXX)
+project(csv2xlsx VERSION 0.2.1 LANGUAGES C CXX)
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_C_STANDARD 99)
@@ -26,21 +26,6 @@ install(TARGETS csv2xlsx RUNTIME DESTINATION bin)
 ADD_TEST(NAME csv2xlsx COMMAND csv2xlsx ${CMAKE_CURRENT_SOURCE_DIR}/libcsv/test/test1.csv -o test1.xlsx)
 ADD_TEST(NAME csv2xlsx_2 COMMAND csv2xlsx ${CMAKE_CURRENT_SOURCE_DIR}/src/genes.csv -o genes.xlsx)
 
-# add_executable(test-libcsv2xlsx src/test/test-libcsv2xlsx.cpp)
-# add_test(NAME test-libcsv2xlsx COMMAND test-libcsv2xlsx)
-# target_link_libraries(test-libcsv2xlsx PRIVATE gtest_main libcsv2xlsx)
-# target_include_directories(test-libcsv2xlsx PRIVATE src thirdparty/libxlsxwriter/include)
-
-#FILE(GLOB zlib_src ./zlib/*.c ./zlib/*.h)
-#ADD_LIBRARY(zlib ${zlib_src})
-
-#ADD_SUBDIRECTORY(csv2xlsx)
-#ADD_SUBDIRECTORY(csv2xlsx-gui)
-#ADD_SUBDIRECTORY(test)
-
 install(FILES README.md LICENSE DESTINATION .)
-
-#SET(CPACK_WIX_LICENSE_RTF "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE")
 SET(CPACK_GENERATOR "ZIP")
-
 INCLUDE(CPack)
