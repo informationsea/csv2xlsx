@@ -11,6 +11,7 @@ CPackConfig.cmake
 CPackSourceConfig.cmake
 Testing/
 _CPack_Packages/
+build/
 
 ## C++
 
