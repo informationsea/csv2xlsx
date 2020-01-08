@@ -13,10 +13,6 @@ jobs:
     os: linux
     before_install:
     - sudo apt-get install libz-dev
-  - dist: xenial
-    os: linux
-    before_install:
-    - sudo apt-get install libz-dev
   - os: osx
 script:
   - mkdir -p build && cd build && cmake .. && cmake --build . && ctest && cpack
@@ -29,3 +25,4 @@ deploy:
   on:
     repo: informationsea/csv2xlsx
     tags: true
+    condition: $TRAVIS_DIST == trusty
