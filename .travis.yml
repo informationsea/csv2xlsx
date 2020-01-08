@@ -1,29 +1,32 @@
 language: c
 jobs:
   include:
-    -
-      dist: bionic
-      os: linux
-      before_install:
-        - sudo apt-get install libz-dev
-    -
-      dist: trusty
-      os: linux
-      before_install:
-        - sudo apt-get install libz-dev
-    -
-      dist: xenial
-      os: linux
-      before_install:
-        - sudo apt-get install libz-dev
-    -
-      dist: xenial
-      os: linux
-      before_install:
-        - sudo apt-get install libz-dev
-    -
-      os: osx
-    -
-      os: windows 
-
-script: "mkdir -p build && cd build && cmake .. && make && make test && make package"
+  - dist: bionic
+    os: linux
+    before_install:
+    - sudo apt-get install libz-dev
+  - dist: trusty
+    os: linux
+    before_install:
+    - sudo apt-get install libz-dev
+  - dist: xenial
+    os: linux
+    before_install:
+    - sudo apt-get install libz-dev
+  - dist: xenial
+    os: linux
+    before_install:
+    - sudo apt-get install libz-dev
+  - os: osx
+  - os: windows
+script:
+  - mkdir -p build && cd build && cmake .. && cmake --build . && ctest && cpack
+deploy:
+  provider: releases
+  api_key:
+    secure: bhdUjGUJSdjCg2+1HvooPyEUreGy+MgzL+YsAQrwUBwBTM7easfTW/Jotj3BCzdBZ/nwIxa7nZL3ULSianDXyyLt6+nN1FG/tnO+ST1+ZXtdyeNk9oCFOQqok1hArOMo5jtffrzndArRQyh7iVbjBdyNBX/6OJMc1HXvYMNjOD5rQOai6Dm0St/TGsEYp0rbNupZwrDJkB8bTbdvL9uGHCFKkBq6N+uN2TTGYNQFIYKWJ2vdNHh+iQBoESnnuI1Ytp5f/2e6blzWMJPtoJdQHtHdqR/DZBTlq88GFkjZAC3w6GgP0TrQPtGSOm6XFDXDltzp6espzqHoUTSnfBOkjc+Q38YLkOm1ZHUGujTdecrR8NsUl9cHoXxuHCeNrD4ASCB7sD4z2ZHFRqEtbk94yuhyhmihxmnlUqIpQdrEF7JKmMiSjT2i8V3dhA3UBwgmeSin4EVUGM4FTu8asEFqLrpqBQOHATVkuKVLCfaQAZrBX4EwvGVlrJ/i3i6YP2JGo2E8085kGDFQMwTuYA/T0HMxKWezb8dGilodMmlSAgXxSFWd6toJSqg845sgw1lznFTrcDQ+DPbGgVrKif7nr71HTn7LBpFZGgV12M5p+qDJ93jpjTyRzar9eu7QYqTe0XEsNFKMPXnTF3aNtejt41MNEVqnyTdQE3FpvIbXy4Q=
+  file_glob: true
+  file: csv2xlsx-*.zip
+  on:
+    repo: informationsea/csv2xlsx
+    tags: true
