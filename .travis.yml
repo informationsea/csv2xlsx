@@ -18,7 +18,6 @@ jobs:
     before_install:
     - sudo apt-get install libz-dev
   - os: osx
-  - os: windows
 script:
   - mkdir -p build && cd build && cmake .. && cmake --build . && ctest && cpack
 deploy:
