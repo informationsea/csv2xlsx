@@ -14,4 +14,4 @@ ExternalProject_Add(
 
 set(GOOGLETEST_LIBRARY gtest)
 set(GOOGLETEST_INCLUDE_DIRS ${CMAKE_CURRENT_BINARY_DIR}/external/googletest-install/include)
-link_directories(${CMAKE_CURRENT_BINARY_DIR}/external/googletest-install/lib)
+link_directories(${CMAKE_CURRENT_BINARY_DIR}/external/googletest-install/lib ${CMAKE_CURRENT_BINARY_DIR}/external/googletest-install/lib64)

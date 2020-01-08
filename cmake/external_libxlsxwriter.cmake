@@ -9,9 +9,10 @@ ExternalProject_Add(
     GIT_TAG           RELEASE_0.9.1
     CMAKE_ARGS        -DCMAKE_INSTALL_PREFIX=${CMAKE_CURRENT_BINARY_DIR}/external/libxlsxwriter-install
                       -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER}
+                      -DCMAKE_INSTALL_LIB=lib
                       -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
 )
 
 set(LIBXLSXWRITER_LIBRARY xlsxwriter)
 set(LIBXLSXWRITER_INCLUDE_DIRS ${CMAKE_CURRENT_BINARY_DIR}/external/libxlsxwriter-install/include)
-link_directories(${CMAKE_CURRENT_BINARY_DIR}/external/libxlsxwriter-install/lib)
+link_directories(${CMAKE_CURRENT_BINARY_DIR}/external/libxlsxwriter-install/lib ${CMAKE_CURRENT_BINARY_DIR}/external/libxlsxwriter-install/lib64)

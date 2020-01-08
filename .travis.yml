@@ -1,2 +1,9 @@
 language: c
+jobs:
+  include:
+    -
+      dist: bionic
+      os: linux
+    -
+      os: osx
 script: "mkdir -p build && cd build && cmake .. && make && make test"

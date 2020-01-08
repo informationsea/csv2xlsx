@@ -1,7 +1,9 @@
 cmake_minimum_required(VERSION 3.4)
 project(CSV2Xlsx C CXX)
 set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_C_STANDARD 99)
 
+find_package(Threads REQUIRED)
 include(cmake/external_zlib.cmake)
 include(cmake/external_libxlsxwriter.cmake)
 include(cmake/external_argtable3.cmake)
