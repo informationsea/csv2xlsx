@@ -55,7 +55,11 @@ bool csv2xlsx_with_config(FILE *csv, const char *output, const csv2xlsx_config *
 	lxw_workbook_options options = {.constant_memory = LXW_TRUE,
 									.tmpdir = NULL};
 	lxw_workbook *workbook = workbook_new_opt(output, &options);
-	lxw_worksheet *sheet = workbook_add_worksheet(workbook, config->sheet_name);
+
+	char sheetname[32];
+	memset(sheetname, 0, sizeof(sheetname));
+	strncpy(sheetname, config->sheet_name, 31);
+	lxw_worksheet *sheet = workbook_add_worksheet(workbook, sheetname);
 	csv2xlsx_format_set format_set = csv2xlsx_create_format_set(workbook);
 
 	convert_csv_to_sheet(sheet, csv_reader, &format_set, config);

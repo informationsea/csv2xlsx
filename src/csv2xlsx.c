@@ -91,7 +91,7 @@ int main(int argc, char **argv)
 
 	for (size_t i = 0; i < input->count; i++)
 	{
-		char sheetname[100];
+		char sheetname[32];
 		if (i < sheet_names->count)
 		{
 			snprintf(sheetname, sizeof(sheetname), "%s", sheet_names->sval[i]);
