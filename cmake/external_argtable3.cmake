@@ -6,13 +6,17 @@ ExternalProject_Add(
     PREFIX            ${CMAKE_CURRENT_BINARY_DIR}/external/argtable3
     INSTALL_DIR       ${CMAKE_CURRENT_BINARY_DIR}/external/argtable3-install
     GIT_REPOSITORY    https://github.com/argtable/argtable3.git
-    GIT_TAG           v3.1.5.1c1bb23
+    GIT_TAG           v3.2.1.52f24e5
     CMAKE_ARGS        -DCMAKE_INSTALL_PREFIX=${CMAKE_CURRENT_BINARY_DIR}/external/argtable3-install
                       -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER}
                       -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
                       -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
 )
 
-set(ARGTABLE3_LIBRARY argtable3_static)
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+    set(ARGTABLE3_LIBRARY argtable3_staticd)
+else()
+    set(ARGTABLE3_LIBRARY argtable3_static)
+endif()
 set(ARGTABLE3_INCLUDE_DIRS ${CMAKE_CURRENT_BINARY_DIR}/external/argtable3-install/include)
 link_directories(${CMAKE_CURRENT_BINARY_DIR}/external/argtable3-install/lib ${CMAKE_CURRENT_BINARY_DIR}/external/argtable3-install/lib64)
