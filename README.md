@@ -1,12 +1,7 @@
-CSV2Excel
-=========
-[![Build Status](https://travis-ci.org/informationsea/csv2xlsx.svg?branch=master)](https://travis-ci.org/informationsea/csv2xlsx)
+# CSV2Excel
 
+Convert CSV files to Excel without worrying auto data format converter.
 
-Convert CSV files to Excel without worrying auto data format
-converter.
-
-License
--------
+## License
 
 GPL version 3 or later
