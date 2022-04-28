@@ -1,20 +1,20 @@
 /*
-* CSV2Xlsx : CSV to Xslx converter
-* Copyright(C) 2016 OKAMURA, Yasunobu
-*
-* This program is free software : you can redistribute it and / or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with this program.If not, see <http://www.gnu.org/licenses/>.
-*/
+ * CSV2Xlsx : CSV to Xslx converter
+ * Copyright(C) 2016 OKAMURA, Yasunobu
+ *
+ * This program is free software : you can redistribute it and / or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.If not, see <http://www.gnu.org/licenses/>.
+ */
 
 #include <xlsxwriter.h>
 #include <libcsv.h>
@@ -99,7 +99,7 @@ lxw_error convert_csv_to_sheet(lxw_worksheet *sheet, struct csv_reader *csv_read
 
 	if (config->autofilter)
 	{
-		lxw_error e = worksheet_autofilter(sheet, 0, 0, row, max_col - 1);
+		lxw_error e = worksheet_autofilter(sheet, 0, 0, row - 1, max_col - 1);
 		if (e != LXW_NO_ERROR)
 		{
 			return e;
