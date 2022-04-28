@@ -1,0 +1,124 @@
+name: Build
+
+on:
+  push:
+    branches: [ master, actions ]
+    tags: [ 'v*' ]
+  pull_request:
+    branches: [ master ]
+
+env:
+  APP_NAME: csv2xlsx    
+
+jobs:
+  tag:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Short tag
+      id: short_tag
+      if: ${{ startsWith(github.ref, 'refs/tags/v')  }}
+      run: echo "::set-output name=tag::$(basename ${{ github.ref }})"
+    - name: Hash
+      id: hash
+      if: ${{ startsWith(github.ref, 'refs/heads/')  }}
+      run: echo "::set-output name=tag::${{ github.sha }}"
+    outputs:
+      tag: ${{ steps.short_tag.outputs.tag }}${{ steps.hash.outputs.tag }}
+
+  build:
+    runs-on: ${{ matrix.config.os }}
+    needs: tag
+    strategy:
+      matrix:
+        config:
+          - os: windows-latest
+            sys: mingw64
+            env: x86_64
+            name: win64
+          - os: windows-latest
+            sys: mingw32
+            env: i686
+            name: win32
+          - os: macos-latest
+            name: macos
+          - os: ubuntu-latest
+            name: linux
+    steps:
+    - name: Git config
+      if: ${{ matrix.config.os == 'windows-latest' }}
+      run: git config --global core.autocrlf input
+    - uses: actions/checkout@v2
+    - uses: msys2/setup-msys2@v2
+      if: ${{ matrix.config.os == 'windows-latest' }}
+      with:
+        msystem: ${{matrix.config.sys}}
+        install: mingw-w64-${{matrix.config.env}}-cmake mingw-w64-${{matrix.config.env}}-ninja mingw-w64-${{matrix.config.env}}-gcc
+    - shell: msys2 {0}
+      if: ${{ matrix.config.os == 'windows-latest' }}
+      run: |-
+        mkdir -p build
+        pushd build
+        cmake ..
+        cmake --build .
+        cpack
+        mv ${{ env.APP_NAME }}-*.zip ${{ env.APP_NAME }}-${{ matrix.config.name }}-${{ needs.tag.outputs.tag}}.zip
+        popd
+    - shell: bash
+      if: ${{ matrix.config.os != 'windows-latest' }}
+      run: |-
+        mkdir -p build
+        pushd build
+        cmake ..
+        cmake --build .
+        cpack
+        mv ${{ env.APP_NAME }}-*.zip ${{ env.APP_NAME }}-${{ matrix.config.name }}-${{ needs.tag.outputs.tag}}.zip
+        popd
+    - uses: actions/upload-artifact@v3
+      with:
+        name: ${{ env.APP_NAME }}-${{ matrix.config.name }}-${{ needs.tag.outputs.tag}}.zip
+        path: build/${{ env.APP_NAME }}-${{ matrix.config.name }}-${{ needs.tag.outputs.tag}}.zip
+
+  release:
+    needs: [build, tag]
+    runs-on: ubuntu-latest
+    if: ${{ startsWith(github.ref, 'refs/tags/v')  }}
+    steps:
+      - name: Create release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ needs.tag.outputs.tag }}
+          draft: false
+          prerelease: false
+    outputs:
+      upload_url: ${{ steps.create_release.outputs.upload_url }}
+
+  upload:
+    needs: [release, tag]
+    runs-on: ubuntu-latest
+    if: ${{ startsWith(github.ref, 'refs/tags/v')  }}
+    strategy:
+      matrix:  
+        target:
+        - macos
+        - linux
+        - win32
+        - win64
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: ${{ env.APP_NAME }}-${{ matrix.target }}-${{ needs.tag.outputs.tag }}.zip
+      - name: Upload Release Asset
+        id: upload-release-asset 
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ needs.release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+          asset_path: ./${{ env.APP_NAME }}-${{ matrix.target }}-${{ needs.tag.outputs.tag }}.zip
+          asset_name: ${{ env.APP_NAME }}-${{ matrix.target }}-${{ needs.tag.outputs.tag }}.zip
+          asset_content_type: application/zip
