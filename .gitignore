@@ -12,6 +12,7 @@ CPackSourceConfig.cmake
 Testing/
 _CPack_Packages/
 build/
+build-mingw64/
 
 ## C++
 
