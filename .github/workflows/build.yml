@@ -8,7 +8,7 @@ on:
     branches: [ master ]
 
 env:
-  APP_NAME: csv2xlsx    
+  APP_NAME: csv2xlsx
 
 jobs:
   tag:
@@ -61,7 +61,7 @@ jobs:
         cmake ..
         cmake --build .
         cpack
-        mv ${{ env.APP_NAME }}-*.zip ${{ env.APP_NAME }}-${{ matrix.config.name }}-${{ needs.tag.outputs.tag}}.zip
+        mv ${{ env.APP_NAME }}-*.zip ${{ env.APP_NAME }}-${{ needs.tag.outputs.tag}}-${{ matrix.config.name }}.zip
         popd
     - shell: bash
       if: ${{ matrix.config.os != 'windows-latest' }}
@@ -71,12 +71,12 @@ jobs:
         cmake ..
         cmake --build .
         cpack
-        mv ${{ env.APP_NAME }}-*.zip ${{ env.APP_NAME }}-${{ matrix.config.name }}-${{ needs.tag.outputs.tag}}.zip
+        mv ${{ env.APP_NAME }}-*.zip ${{ env.APP_NAME }}-${{ needs.tag.outputs.tag}}-${{ matrix.config.name }}.zip
         popd
     - uses: actions/upload-artifact@v3
       with:
-        name: ${{ env.APP_NAME }}-${{ matrix.config.name }}-${{ needs.tag.outputs.tag}}.zip
-        path: build/${{ env.APP_NAME }}-${{ matrix.config.name }}-${{ needs.tag.outputs.tag}}.zip
+        name: ${{ env.APP_NAME }}-${{ needs.tag.outputs.tag}}-${{ matrix.config.name }}.zip
+        path: build/${{ env.APP_NAME }}-${{ needs.tag.outputs.tag}}-${{ matrix.config.name }}.zip
 
   release:
     needs: [build, tag]
@@ -111,7 +111,7 @@ jobs:
       - name: Download artifacts
         uses: actions/download-artifact@v2
         with:
-          name: ${{ env.APP_NAME }}-${{ matrix.target }}-${{ needs.tag.outputs.tag }}.zip
+          name: ${{ env.APP_NAME }}-${{ needs.tag.outputs.tag }}-${{ matrix.target }}.zip
       - name: Upload Release Asset
         id: upload-release-asset 
         uses: actions/upload-release-asset@v1
@@ -119,6 +119,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ needs.release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-          asset_path: ./${{ env.APP_NAME }}-${{ matrix.target }}-${{ needs.tag.outputs.tag }}.zip
-          asset_name: ${{ env.APP_NAME }}-${{ matrix.target }}-${{ needs.tag.outputs.tag }}.zip
+          asset_path: ./${{ env.APP_NAME }}-${{ needs.tag.outputs.tag }}-${{ matrix.target }}.zip
+          asset_name: ${{ env.APP_NAME }}-${{ needs.tag.outputs.tag }}-${{ matrix.target }}.zip
           asset_content_type: application/zip
