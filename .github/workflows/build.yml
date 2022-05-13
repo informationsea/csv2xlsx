@@ -103,8 +103,8 @@ jobs:
     strategy:
       matrix:  
         target:
-        - macos
-        - linux
+        - Darwin
+        - Linux
         - win32
         - win64
     steps:
