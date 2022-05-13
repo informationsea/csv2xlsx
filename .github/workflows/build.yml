@@ -40,9 +40,9 @@ jobs:
             env: i686
             name: win32
           - os: macos-latest
-            name: macos
+            name: Darwin
           - os: ubuntu-latest
-            name: linux
+            name: Linux
     steps:
     - name: Git config
       if: ${{ matrix.config.os == 'windows-latest' }}
