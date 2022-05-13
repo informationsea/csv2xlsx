@@ -97,7 +97,16 @@ lxw_error convert_csv_to_sheet(lxw_worksheet *sheet, struct csv_reader *csv_read
 		}
 	} while (1);
 
-	if (config->autofilter)
+	if (config->table)
+	{
+		lxw_table_options options = {.no_autofilter = config->autofilter ? LXW_FALSE : LXW_TRUE};
+		lxw_error e = worksheet_add_table(sheet, 0, 0, row - 1, max_col - 1, &options);
+		if (e != LXW_NO_ERROR)
+		{
+			return e;
+		}
+	}
+	else if (config->autofilter)
 	{
 		lxw_error e = worksheet_autofilter(sheet, 0, 0, row - 1, max_col - 1);
 		if (e != LXW_NO_ERROR)

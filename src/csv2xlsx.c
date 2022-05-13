@@ -20,7 +20,7 @@
 #include <argtable3.h>
 #include <libcsv.h>
 
-struct arg_lit *help, *autofilter, *convert_digit, *convert_number, *convert_boolean, *convert_percent, *convert_formula, *convert_url;
+struct arg_lit *help, *autofilter, *convert_digit, *convert_number, *convert_boolean, *convert_percent, *convert_formula, *convert_url, *disable_table;
 struct arg_file *output, *input;
 struct arg_str *sheet_names;
 struct arg_end *end;
@@ -31,6 +31,7 @@ int main(int argc, char **argv)
 	void *argtable[] = {
 		help = arg_lit0("h", "help", "display this help and exit"),
 		output = arg_file1("o", "output", "<EXCEL>", "Output xlsx file"),
+		disable_table = arg_lit0("t", "disable-table", "Disble table (Please set this option to reduce memory usage)"),
 		autofilter = arg_lit0("a", "disable-autofilter", "Disable autofilter"),
 		convert_digit = arg_lit0("d", "disable-convert-digit", "Disable auto convert to integer"),
 		convert_number = arg_lit0("n", "disable-convert-number", "Disable auto convert to floading number"),
@@ -55,6 +56,7 @@ int main(int argc, char **argv)
 
 	if (help->count > 0)
 	{
+		printf("csv2xlsx  https://github.com/informationsea/csv2xlsx\n\n");
 		printf("Usage: %s", argv[0]);
 		arg_print_syntax(stdout, argtable, "\n");
 		arg_print_glossary(stdout, argtable, "  %-25s %s\n");
@@ -74,6 +76,7 @@ int main(int argc, char **argv)
 		.delimiter = ',',
 		.quote = '"',
 		.sheet_name = "Sheet 1",
+		.table = disable_table->count == 0,
 		.autofilter = autofilter->count == 0,
 		.auto_convert_digit = convert_digit->count == 0,
 		.auto_convert_number = convert_number->count == 0,
@@ -84,7 +87,7 @@ int main(int argc, char **argv)
 		.auto_convert_url = convert_url->count == 0,
 	};
 
-	lxw_workbook_options options = {.constant_memory = LXW_TRUE,
+	lxw_workbook_options options = {.constant_memory = xlsx_config.table ? LXW_FALSE : LXW_TRUE,
 									.tmpdir = NULL};
 	lxw_workbook *workbook = workbook_new_opt(output->filename[0], &options);
 	csv2xlsx_format_set format_set = csv2xlsx_create_format_set(workbook);
