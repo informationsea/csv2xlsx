@@ -3,8 +3,10 @@ TARGET_INCLUDE_DIRECTORIES(libcsv2xlsx PUBLIC ../libcsv ../libxlsxwriter/include
 TARGET_LINK_LIBRARIES(libcsv2xlsx PRIVATE libcsv libxlsxwriter)
 
 ADD_EXECUTABLE(csv2xlsx csv2xlsx.c)
+# set(CMAKE_CXX_FLAGS -DVERSION=${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH})
 TARGET_INCLUDE_DIRECTORIES(libcsv2xlsx PUBLIC ../libcsv ../libxlsxwriter/include)
 TARGET_LINK_LIBRARIES(csv2xlsx PRIVATE libcsv2xlsx)
+target_compile_definitions(csv2xlsx PRIVATE CSV2XLSX_VERSION=${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH})
 
 add_executable(libcsv2xlsx)
 

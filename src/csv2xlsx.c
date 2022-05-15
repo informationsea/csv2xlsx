@@ -25,16 +25,19 @@ struct arg_file *output, *input;
 struct arg_str *sheet_names;
 struct arg_end *end;
 
+#define STR(x) #x
+#define STR2(x) STR(x)
+
 int main(int argc, char **argv)
 {
 	/* the global arg_xxx structs are initialised within the argtable */
 	void *argtable[] = {
 		help = arg_lit0("h", "help", "display this help and exit"),
 		output = arg_file1("o", "output", "<EXCEL>", "Output xlsx file"),
-		disable_table = arg_lit0("t", "disable-table", "Disble table (Please set this option to reduce memory usage)"),
+		disable_table = arg_lit0("t", "disable-table", "Disable table (Please set this option to reduce memory usage)"),
 		autofilter = arg_lit0("a", "disable-autofilter", "Disable autofilter"),
 		convert_digit = arg_lit0("d", "disable-convert-digit", "Disable auto convert to integer"),
-		convert_number = arg_lit0("n", "disable-convert-number", "Disable auto convert to floading number"),
+		convert_number = arg_lit0("n", "disable-convert-number", "Disable auto convert to floating number"),
 		convert_boolean = arg_lit0("b", "disable-convert-bool", "Disable auto convert to boolean"),
 		convert_percent = arg_lit0("p", "disable-convert-percent", "Disable auto convert to percent"),
 		convert_formula = arg_lit0("f", "disable-convert-formula", "Disable auto convert to formula"),
@@ -56,7 +59,7 @@ int main(int argc, char **argv)
 
 	if (help->count > 0)
 	{
-		printf("csv2xlsx  https://github.com/informationsea/csv2xlsx\n\n");
+		printf("csv2xlsx " STR2(CSV2XLSX_VERSION) " https://github.com/informationsea/csv2xlsx\n\n");
 		printf("Usage: %s", argv[0]);
 		arg_print_syntax(stdout, argtable, "\n");
 		arg_print_glossary(stdout, argtable, "  %-25s %s\n");

@@ -1,4 +1,4 @@
-if(MINGW)
+if(WIN32)
 include(ExternalProject)
 
 # https://qiita.com/usagi/items/c5715c50bb56b65d0cd5
