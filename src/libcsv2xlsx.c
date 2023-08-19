@@ -246,6 +246,12 @@ converted_value convert_value(const char *text, const csv2xlsx_config *config)
 	// convert number
 	if (config->auto_convert_number && is_number(text))
 	{
+        char *comma = strrchr(text, ',');
+        if (comma)
+        {
+            *comma = '.';
+        }
+
 		char *end;
 		double number = strtod(text, &end);
 		if (*end == '\0')
@@ -316,7 +322,7 @@ bool is_number(const char *text)
 
 	while (*text)
 	{
-		if (*text == '.')
+		if (*text == '.' || *text == ',')
 		{
 			comma_count += 1;
 		}
