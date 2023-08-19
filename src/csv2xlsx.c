@@ -22,7 +22,7 @@
 
 struct arg_lit *help, *autofilter, *convert_digit, *convert_number, *convert_boolean, *convert_percent, *convert_formula, *convert_url, *disable_table;
 struct arg_file *output, *input;
-struct arg_str *sheet_names;
+struct arg_str *delimiter, *sheet_names;
 struct arg_end *end;
 
 #define STR(x) #x
@@ -34,6 +34,7 @@ int main(int argc, char **argv)
 	void *argtable[] = {
 		help = arg_lit0("h", "help", "display this help and exit"),
 		output = arg_file1("o", "output", "<EXCEL>", "Output xlsx file"),
+		delimiter = arg_str0(NULL, "delimiter", "<DELIMITER>", "Delimiter used in the CSV file, defaults to ','"),
 		disable_table = arg_lit0("t", "disable-table", "Disable table (Please set this option to reduce memory usage)"),
 		autofilter = arg_lit0("a", "disable-autofilter", "Disable autofilter"),
 		convert_digit = arg_lit0("d", "disable-convert-digit", "Disable auto convert to integer"),
@@ -76,7 +77,7 @@ int main(int argc, char **argv)
 	}
 
 	csv2xlsx_config xlsx_config = {
-		.delimiter = ',',
+		.delimiter = delimiter->count > 0 && delimiter->sval[0][0] ? delimiter->sval[0][0] : ',',
 		.quote = '"',
 		.sheet_name = "Sheet 1",
 		.table = disable_table->count == 0,
@@ -119,7 +120,7 @@ int main(int argc, char **argv)
 		char quote = '\0';
 		if (strcmp(input->filename[i] + filename_len - 4, ".csv") == 0)
 		{
-			delimiter = ',';
+			delimiter = xlsx_config.delimiter;
 			quote = '"';
 		}
 
