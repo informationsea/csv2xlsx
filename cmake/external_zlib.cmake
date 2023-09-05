@@ -1,4 +1,5 @@
 if(WIN32)
+
 include(ExternalProject)
 
 # https://qiita.com/usagi/items/c5715c50bb56b65d0cd5
@@ -7,7 +8,7 @@ ExternalProject_Add(
     PREFIX            ${CMAKE_CURRENT_BINARY_DIR}/external/zlib
     INSTALL_DIR       ${CMAKE_CURRENT_BINARY_DIR}/external/zlib-install
     GIT_REPOSITORY    https://github.com/madler/zlib.git
-    GIT_TAG           v1.2.12
+    GIT_TAG           v1.3
     CMAKE_ARGS        -DCMAKE_INSTALL_PREFIX=${CMAKE_CURRENT_BINARY_DIR}/external/zlib-install
                       -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER}
                       -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}

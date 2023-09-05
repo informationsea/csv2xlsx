@@ -1,8 +1,12 @@
 cmake_minimum_required(VERSION 3.4)
-project(csv2xlsx VERSION 0.2.5 LANGUAGES C CXX)
+project(csv2xlsx VERSION 0.3.0 LANGUAGES C CXX)
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_C_STANDARD 99)
+
+if(MSVC)
+    add_definitions(-D_CRT_SECURE_NO_WARNINGS)
+endif()
 
 find_package(Threads REQUIRED)
 include(cmake/external_zlib.cmake)
@@ -16,8 +20,7 @@ ADD_SUBDIRECTORY(libcsv)
 ADD_LIBRARY(libcsv2xlsx src/libcsv2xlsx.c src/libcsv2xlsx.h)
 add_dependencies(libcsv2xlsx libxlsxwriter argtable3)
 TARGET_INCLUDE_DIRECTORIES(libcsv2xlsx PUBLIC libcsv ${LIBXLSXWRITER_INCLUDE_DIRS} ${ARGTABLE3_INCLUDE_DIRS} ${ZLIB_INCLUDE_DIRS})
-#print("libxlsx" ${LIBXLSXWRITER_INCLUDE_DIRS})
-TARGET_LINK_LIBRARIES(libcsv2xlsx PRIVATE csv ${LIBXLSXWRITER_LIBRARY} ${ZLIB_LIBRARIES})
+TARGET_LINK_LIBRARIES(libcsv2xlsx PRIVATE csv ${LIBXLSXWRITER_LIBRARY} ${ZLIB_LIBRARIES} ${ARGTABLE3_LIBRARY})
 
 ADD_EXECUTABLE(csv2xlsx src/csv2xlsx.c)
 TARGET_LINK_LIBRARIES(csv2xlsx PUBLIC libcsv2xlsx ${ARGTABLE3_LIBRARY} ${ARGTABLE3_LIBRARY})

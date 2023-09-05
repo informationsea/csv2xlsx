@@ -4,11 +4,17 @@ add_library(csv libcsv.h libcsv.c)
 add_dependencies(csv googletest)
 target_include_directories(csv PUBLIC ${CMAKE_CURRENT_SOURCE_DIR} ${GOOGLETEST_INCLUDE_DIRS})
 
+if (CMAKE_BUILD_TYPE STREQUAL "Debug")
+    set(GTEST_LIB_SUFFIX "d")
+else()
+    set(GTEST_LIB_SUFFIX "")
+endif()
+
 ADD_EXECUTABLE(test_libcsv test/test_libcsv.cpp test/test1.csv)
-TARGET_LINK_LIBRARIES(test_libcsv csv gtest_main ${GOOGLETEST_LIBRARY} ${CMAKE_THREAD_LIBS_INIT})
+TARGET_LINK_LIBRARIES(test_libcsv csv gtest_main${GTEST_LIB_SUFFIX} ${GOOGLETEST_LIBRARY}${GTEST_LIB_SUFFIX} ${CMAKE_THREAD_LIBS_INIT})
 
 ADD_EXECUTABLE(test_libcsv2 test/test_libcsv2.cpp test/simple1.csv)
-TARGET_LINK_LIBRARIES(test_libcsv2 csv gtest_main ${GOOGLETEST_LIBRARY} ${CMAKE_THREAD_LIBS_INIT})
+TARGET_LINK_LIBRARIES(test_libcsv2 csv gtest_main${GTEST_LIB_SUFFIX} ${GOOGLETEST_LIBRARY}${GTEST_LIB_SUFFIX} ${CMAKE_THREAD_LIBS_INIT})
 
 ADD_TEST(NAME test_libcsv1 COMMAND test_libcsv)
 SET_TESTS_PROPERTIES(test_libcsv1 PROPERTIES ENVIRONMENT CSV1=${CMAKE_CURRENT_SOURCE_DIR}/test/test1.csv)
