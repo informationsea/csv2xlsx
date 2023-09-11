@@ -126,9 +126,9 @@ unsigned int csv2xlsx_int_length(int value) {
 /**
  * Naive implementation, supports the most basic formatting only.
  */
-size_t csv2xlsx_formatted_number_length(double value, const char* format)
+size_t csv2xlsx_formatted_number_length(double value, const char* number_format)
 {
-    char *decimal_separator = strchr(format, '.');
+    char *decimal_separator = strchr(number_format, '.');
     size_t zeroes_count = 0;
 
     if (decimal_separator != NULL) {
@@ -139,7 +139,7 @@ size_t csv2xlsx_formatted_number_length(double value, const char* format)
     size_t length = csv2xlsx_int_length((unsigned int) rounded_value);
 
     // Thousands separator
-    if (strstr(format, "# ") != NULL) {
+    if (strstr(number_format, "# ") != NULL) {
         length += (length - 1) / 3;
     }
 
@@ -159,7 +159,7 @@ lxw_error csv2xlsx_convert_csv_to_worksheet(
     lxw_row_t row = 0;
     lxw_col_t column = 0;
     lxw_col_t max_column = 0;
-    double column_widths[MAX_COLUMNS] = {0};
+    double column_widths[CSV2XLST_MAX_COLUMNS] = {0};
     lxw_error error;
 
     while (true) {
@@ -276,9 +276,13 @@ void csv2xlsx_complete_format(csv2xlsx_format *format, csv2xlsx_cell_type type) 
 }
 
 csv2xlsx_format_set csv2xlsx_format_set_create(lxw_workbook *workbook) {
-    return (csv2xlsx_format_set) {
+    csv2xlsx_format_set format_set = {
         .workbook = workbook,
+        .formats_count = 1,
     };
+    format_set.formats[CSV2XLST_NULL_FORMAT] = workbook_add_format(workbook);
+
+    return format_set;
 }
 
 lxw_format* csv2xlsx_format_set_find(csv2xlsx_format_set *format_set, csv2xlsx_format *format) {
@@ -384,9 +388,14 @@ lxw_error csv2xlsx_write_cell(
     csv2xlsx_cell_value cell_value = csv2xlsx_convert_value(value, column_definition->type, config->auto_convert); // TODO: HEADER SHOULD IGNORE THIS
     lxw_format *format;
     format = get_column_format(column_definition, format_set, cell_value.type, config->header_row_count > row);
+    const char *number_format = format->num_format;
+    bool adjust_width = column_definition->width == CSV2XLSX_WIDTH_AUTO;
     lxw_error error;
     size_t length;
-    bool adjust_width = column_definition->width == CSV2XLSX_WIDTH_AUTO;
+
+    if (format == format_set->formats[CSV2XLST_NULL_FORMAT]) {
+        format = NULL;
+    }
 
 	switch (cell_value.type) {
         case CSV2XLSX_CELL_TYPE_BLANK:
@@ -399,11 +408,11 @@ lxw_error csv2xlsx_write_cell(
             break;
         case CSV2XLSX_CELL_TYPE_NUMBER:
             error = worksheet_write_number(worksheet, row, column, cell_value.number, format);
-            length = adjust_width ? csv2xlsx_formatted_number_length(cell_value.number, format->num_format) : 0;
+            length = adjust_width ? csv2xlsx_formatted_number_length(cell_value.number, number_format) : 0;
             break;
         case CSV2XLSX_CELL_TYPE_PERCENT:
             error = worksheet_write_number(worksheet, row, column, cell_value.number, format);
-            length = adjust_width ? csv2xlsx_formatted_number_length(cell_value.number, format->num_format) + 2 : 0;
+            length = adjust_width ? csv2xlsx_formatted_number_length(cell_value.number, number_format) + 1 : 0;
             break;
         case CSV2XLSX_CELL_TYPE_BOOL:
             error = worksheet_write_boolean(worksheet, row, column, cell_value.boolean ? 1 : 0, format);
@@ -422,7 +431,6 @@ lxw_error csv2xlsx_write_cell(
             length = adjust_width ? strlen(cell_value.text) : 0;
             break;
 	}
-
 
     if (adjust_width && length > column_widths[column]) {
 	    double max_width = column_definition->max_width == CSV2XLSX_WIDTH_UNDEFINED

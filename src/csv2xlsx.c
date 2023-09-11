@@ -38,7 +38,7 @@ int main(int argc, char **argv) {
 		csv_delimiter = arg_str0("D", "delimiter", NULL, "Configure delimiter used in the CSV file, defaults to ','"),
         table = arg_lit0("t", "table", "Enable table (do not enable this option to reduce memory usage)"),
         header = arg_lit0("H", "header", "Enable header (a shorthand to passing --header-rows=1)"),
-        header_rows = arg_int0("r", "header-rows", NULL, "Enable header and set number of rows (defaults to 1)"),
+        header_rows = arg_int0("r", "header-rows", NULL, "Enable header and set number of header rows."),
 		auto_filter = arg_lit0("a", "auto-filter", "Enable AutoFilter"),
         freeze_panes = arg_str0("P", "freeze-panes", NULL, "Split and freeze a worksheet into panes in format 'row' or 'row,column'"),
         sheet_names = arg_strn("s", "sheet-name", NULL, 0, 100, "Configure excel sheet names"),

@@ -33,7 +33,7 @@ struct csv_reader {
      char quote_char;
 	 char *buf;
 	 size_t current_buffer_size;
-	 bool last_charator_is_return;
+	 bool last_character_is_return;
 };
 
 struct csv_reader* csv_reader_initialize(FILE *file, char delimiter, char quote_char);

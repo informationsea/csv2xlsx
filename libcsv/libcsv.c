@@ -38,7 +38,7 @@ struct csv_reader *csv_reader_initialize(FILE *file, char delimiter, char quote_
 	reader->quote_char = quote_char;
 	reader->buf = malloc(DEFAULT_BUFFER_SIZE);
 	reader->current_buffer_size = DEFAULT_BUFFER_SIZE;
-	reader->last_charator_is_return = false;
+	reader->last_character_is_return = false;
 	return reader;
 }
 
@@ -77,29 +77,29 @@ const char *csv_read_next(struct csv_reader *reader, bool *lineend)
 		{
 			if (ch == reader->delimiter)
 			{
-				reader->last_charator_is_return = false;
+				reader->last_character_is_return = false;
 				goto finish;
 			}
-			else if (ch == '\n' && current_size == 0 && reader->last_charator_is_return)
+			else if (ch == '\n' && current_size == 0 && reader->last_character_is_return)
 			{
 				continue; // skip
 			}
 			else if (ch == '\r' || ch == '\n')
 			{
-				reader->last_charator_is_return = false;
+				reader->last_character_is_return = ch == '\r';
 				*lineend = true;
 				if (ch == '\r')
-					reader->last_charator_is_return = true;
+					reader->last_character_is_return = true;
 				goto finish;
 			}
 			else if (ch == reader->quote_char && current_size == 0)
 			{
-				reader->last_charator_is_return = false;
+				reader->last_character_is_return = false;
 				mode = IN_QUOTE;
 			}
 			else
 			{
-				reader->last_charator_is_return = false;
+				reader->last_character_is_return = false;
 				current_size = reader_add_charactor(reader, ch, current_size);
 				if (current_size == 0)
 					return 0; // Error
@@ -128,10 +128,10 @@ const char *csv_read_next(struct csv_reader *reader, bool *lineend)
 			}
 			else if (ch == '\r' || ch == '\n')
 			{
-				reader->last_charator_is_return = false;
+				reader->last_character_is_return = false;
 				*lineend = true;
 				if (ch == '\r')
-					reader->last_charator_is_return = true;
+					reader->last_character_is_return = true;
 				goto finish;
 			}
 			else if (ch == reader->delimiter)

@@ -29,23 +29,17 @@
 extern "C" {
 #endif /* __cplusplus */
 
-#define MAX_COLUMNS 1000
-#define MAX_FORMATS 200
-#define MAX_COLUMN_DEFINITIONS 100
+#define CSV2XLST_MAX_COLUMNS 1000
+#define CSV2XLST_MAX_FORMATS 200
+#define CSV2XLST_NULL_FORMAT 0
+#define CSV2XLST_MAX_COLUMN_DEFINITIONS 100
 #define CSV2XLSX_COLUMN_UNDEFINED -1
 #define CSV2XLSX_COLOR_UNDEFINED 0xFFFFFFFF
 #define CSV2XLSX_COLOR_UNSET LXW_COLOR_UNSET
 #define CSV2XLSX_COLOR_LINK LXW_COLOR_BLUE
 #define CSV2XLSX_WIDTH_UNDEFINED (-1.0)
 #define CSV2XLSX_WIDTH_AUTO (-2.0)
-#define CSV2XLSX_MAX_WIDTH_DEFAULT 30.0
-
-    //     PREFIXED CONSTANTS?
-//    #define WIDTH_DEFAULT LXW_DEF_COL_WIDTH
-//    #define WIDTH_UNSET -1.0
-//    #define WIDTH_AUTO -2.0
-//    #define MAX_WIDTH_UNSET -1.0
-//    #define MAX_WIDTH_DEFAULT 30.0
+#define CSV2XLSX_MAX_WIDTH_DEFAULT 50.0
 
 typedef lxw_color_t csv2xlsx_color;
 
@@ -104,8 +98,7 @@ csv2xlsx_column_definition csv2xlsx_column_definition_create();
 
 typedef struct _csv2xlsx_column_config {
     csv2xlsx_column_definition default_column_definition;
-    csv2xlsx_column_definition column_definitions[MAX_COLUMN_DEFINITIONS];
-//    size_t count;
+    csv2xlsx_column_definition column_definitions[CSV2XLST_MAX_COLUMN_DEFINITIONS];
 } csv2xlsx_column_config;
 
 csv2xlsx_column_config csv2xlsx_column_config_create(lxw_workbook *workbook);
@@ -138,13 +131,9 @@ typedef struct _csv2xlsx_config {
 
 csv2xlsx_config csv2xlsx_config_default();
 
-
-//csv2xlsx_column_config csv2xlsx_column_config_create(lxw_workbook *workbook);
-//csv2xlsx_column_definition* csv2xlsx_column_config_get_column(unsigned int column);
-
 typedef struct _csv2xlsx_format_set {
     lxw_workbook *workbook;
-    lxw_format *formats[MAX_FORMATS];
+    lxw_format *formats[CSV2XLST_MAX_FORMATS];
     size_t formats_count;
 } csv2xlsx_format_set;
 
