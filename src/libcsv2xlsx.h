@@ -29,10 +29,9 @@
 extern "C" {
 #endif /* __cplusplus */
 
-#define CSV2XLST_MAX_COLUMNS 1000
+#define CSV2XLST_MAX_COLUMNS 500
 #define CSV2XLST_MAX_FORMATS 200
 #define CSV2XLST_NULL_FORMAT 0
-#define CSV2XLST_MAX_COLUMN_DEFINITIONS 100
 #define CSV2XLSX_COLUMN_UNDEFINED -1
 #define CSV2XLSX_COLOR_UNDEFINED 0xFFFFFFFF
 #define CSV2XLSX_COLOR_UNSET LXW_COLOR_UNSET
@@ -98,7 +97,7 @@ csv2xlsx_column_definition csv2xlsx_column_definition_create();
 
 typedef struct _csv2xlsx_column_config {
     csv2xlsx_column_definition default_column_definition;
-    csv2xlsx_column_definition column_definitions[CSV2XLST_MAX_COLUMN_DEFINITIONS];
+    csv2xlsx_column_definition column_definitions[CSV2XLST_MAX_COLUMNS];
 } csv2xlsx_column_config;
 
 csv2xlsx_column_config csv2xlsx_column_config_create(lxw_workbook *workbook);
@@ -204,6 +203,7 @@ bool csv2xlsx_parse_column_definition_column(const char* text, int* column);
 bool csv2xlsx_parse_column_definition_format_property(char* text, csv2xlsx_format* format);
 bool csv2xlsx_parse_column_definition_format(char* text, csv2xlsx_format* format);
 
+unsigned int csv2xlsx_int_length(int value);
 char *csv2xlsx_string_trim_left(char *text);
 size_t csv2xlsx_string_trim_right_length(const char* text);
 size_t csv2xlsx_substring_trim_right_length(const char* start, const char* end);

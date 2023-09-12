@@ -24,15 +24,48 @@
 #define STRING_LITERAL(x) #x
 #define STRING(x) STRING_LITERAL(x)
 
+#define MAX_SHEETS 50
+#define MAX_SHEET_NAME_LENGTH 31
+
+typedef char sheet_name[MAX_SHEET_NAME_LENGTH + 1];
+sheet_name assigned_sheet_names[MAX_SHEETS];
+
+bool sheet_exists(const char *sheet_name, int sheets_count) {
+    for (int i = 0; i < sheets_count; i++) {
+        if (strcmp(assigned_sheet_names[i], sheet_name) == 0) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+void generate_unique_sheet_name(const char *sheet_name_candidate, char *sheet_name, size_t sheets_count) {
+    int suffix = 2;
+    strncpy(sheet_name, sheet_name_candidate, MAX_SHEET_NAME_LENGTH);
+    sheet_name[MAX_SHEET_NAME_LENGTH] = '\0';
+
+    while (sheet_exists(sheet_name, sheets_count)) {
+        if (strlen(sheet_name_candidate) + csv2xlsx_int_length(suffix) >= MAX_SHEET_NAME_LENGTH) {
+            fprintf(stderr, "Sheet name too long, truncating.\n");
+            generate_unique_sheet_name("Sheet", sheet_name, sheets_count);
+
+            return;
+        }
+
+        snprintf(sheet_name, MAX_SHEET_NAME_LENGTH, "%s%d", sheet_name_candidate, suffix++);
+    }
+}
+
 int main(int argc, char **argv) {
     struct arg_lit *help, *table, *header, *auto_filter;
     struct arg_lit *convert_digit, *convert_number, *convert_boolean, *convert_percent, *convert_formula, *convert_url;
     struct arg_file *files;
-    struct arg_str *csv_delimiter, *freeze_panes, *sheet_names, *columns, *header_column_formats;
+    struct arg_str *csv_delimiter, *freeze_panes, *sheet_names, *columns, *header_column_formats, *temp_directory;
     struct arg_int *header_rows;
     struct arg_end *end;
 	void *argtable[] = {
-        files = arg_filen(NULL, NULL, NULL, 2, 100, "Input TSV or CSV files"),
+        files = arg_filen(NULL, NULL, NULL, 2, MAX_SHEETS, "Input TSV or CSV files"),
         arg_rem("<file>", "Output XLSX file"),
 		help = arg_lit0("h", "help", "Display this help and exit"),
 		csv_delimiter = arg_str0("D", "delimiter", NULL, "Configure delimiter used in the CSV file, defaults to ','"),
@@ -41,7 +74,7 @@ int main(int argc, char **argv) {
         header_rows = arg_int0("r", "header-rows", NULL, "Enable header and set number of header rows."),
 		auto_filter = arg_lit0("a", "auto-filter", "Enable AutoFilter"),
         freeze_panes = arg_str0("P", "freeze-panes", NULL, "Split and freeze a worksheet into panes in format 'row' or 'row,column'"),
-        sheet_names = arg_strn("s", "sheet-name", NULL, 0, 100, "Configure excel sheet names"),
+        sheet_names = arg_strn("s", "sheet-name", NULL, 0, MAX_SHEETS, "Configure excel sheet names"),
         columns = arg_strn("c", "column", NULL, 0, 200, "Configure columns in format like '0=type: string' or '1=type: number; number-format: #,##0.00; color: #FF0000', definitions without column number are treated as defaults"),
         header_column_formats = arg_strn("F", "header-column", NULL, 0, 200, "Configure header column format in format like '0=background-color: #33333333; color: #FFFFFF', definitions without column number are treated as defaults"),
 		convert_digit = arg_lit0("d", "convert-digit", "Enable automatic conversion to integer"),
@@ -50,6 +83,7 @@ int main(int argc, char **argv) {
 		convert_percent = arg_lit0("p", "convert-percent", "Enable automatic convert to percent"),
 		convert_formula = arg_lit0("f", "convert-formula", "Enable automatic convert to formula"),
 		convert_url = arg_lit0("u", "convert-url", "Enable automatic convert to url"),
+        temp_directory = arg_str0("T", "temp-directory", NULL, "Configure alternative temporary files location to override system default"),
 		end = arg_end(20),
 	};
 
@@ -103,8 +137,8 @@ int main(int argc, char **argv) {
 	}
 
 	lxw_workbook *workbook = workbook_new_opt(files->filename[files->count - 1], &(lxw_workbook_options) {
-        .constant_memory = config.table ? LXW_FALSE : LXW_TRUE,
-        .tmpdir = NULL, // TODO
+        .constant_memory = config.table ? LXW_FALSE : LXW_TRUE, // TODO: FALSE produces smaller output, investigate if we should use it instead
+        .tmpdir = temp_directory->count > 0 ? (char *) temp_directory->sval[0] : NULL,
     });
     config.column_config = csv2xlsx_column_config_create(workbook);
     bool success = csv2xlsx_parse_column_config(
@@ -123,14 +157,22 @@ int main(int argc, char **argv) {
 
     csv2xlsx_format_set format_set = csv2xlsx_format_set_create(workbook);
 
+    if (files->count - 1 > MAX_SHEETS) {
+        fprintf(stderr, "Maximum number of %d sheets exceeded.", MAX_SHEETS);
+
+        return 1;
+    }
+
 	for (size_t i = 0; i < files->count - 1; i++) {
-		char sheet_name[32];
-        snprintf(
-            sheet_name,
-            sizeof(sheet_name),
-            "%s",
-            sheet_names->count > i ? sheet_names->sval[i] : files->basename[i]
-        );
+        char sheet_name[MAX_SHEET_NAME_LENGTH + 1];
+
+        if (sheet_names->count > i) {
+            strcpy(sheet_name, sheet_names->sval[i]);
+        } else {
+            strncpy(sheet_name, files->basename[i], strlen(files->basename[i]) - strlen(files->extension[i]));
+        }
+
+        generate_unique_sheet_name(sheet_name, assigned_sheet_names[i], i);
 		FILE *csv_file = fopen(files->filename[i], "rb");
 
 		if (csv_file == NULL) {
@@ -155,7 +197,7 @@ int main(int argc, char **argv) {
 			return 1;
 		}
 
-		lxw_worksheet *worksheet = workbook_add_worksheet(workbook, sheet_name);
+		lxw_worksheet *worksheet = workbook_add_worksheet(workbook, assigned_sheet_names[i]);
 		lxw_error error = csv2xlsx_convert_csv_to_worksheet(worksheet, csv_reader, &config, &format_set);
 
         if (error != LXW_NO_ERROR) {

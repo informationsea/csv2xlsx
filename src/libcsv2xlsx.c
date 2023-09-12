@@ -31,7 +31,7 @@ bool csv2xlsx(FILE *csv, const char *output, csv2xlsx_config *config) {
     }
 
     lxw_workbook_options options = {
-        .constant_memory = true, // TODO: desirable? Set by default? Measure memory consumption & performance.
+        .constant_memory = LXW_TRUE, // TODO: desirable? Set by default? Measure memory consumption & performance.
     };
     lxw_workbook *workbook = workbook_new_opt(output, &options);
     lxw_worksheet *worksheet = workbook_add_worksheet(workbook, config->sheet_name);
@@ -107,20 +107,6 @@ csv2xlsx_column_definition* csv2xlsx_column_config_get_column_definition(
     return config->column_definitions[column].initialized
         ? &config->column_definitions[column]
         : &config->default_column_definition;
-}
-
-unsigned int csv2xlsx_int_length(int value) {
-    if (value == 0) {
-        return 1;
-    }
-
-    int length = (unsigned int) log10(abs(value)) + 1;
-
-    if (value < 0) {
-        length++;
-    }
-
-    return length;
 }
 
 /**
@@ -344,14 +330,13 @@ lxw_format* get_column_format(
 
     if (header) {
         format = &column_definition->header_format;
-        // TODO: Called multiple times
         csv2xlsx_complete_format(format, type);
     } else {
         format = column_definition->type_formats[type];
     }
 
     if (format == NULL) {
-        // TODO: The only heap allocation, does it worth it?
+        // TODO: The only heap allocation, does it worth it? We should free it
         format = (csv2xlsx_format *) malloc(sizeof(csv2xlsx_format));
         *format = column_definition->data_format;
         csv2xlsx_complete_format(format, type);
@@ -373,7 +358,7 @@ lxw_format* get_column_format(
     return format_set_format;
 }
 
-// TODO: use const where possible
+// TODO: Use const where possible
 lxw_error csv2xlsx_write_cell(
     lxw_worksheet *worksheet,
     lxw_row_t row,
@@ -385,9 +370,11 @@ lxw_error csv2xlsx_write_cell(
 ) {
     csv2xlsx_column_definition *column_definition;
     column_definition = csv2xlsx_column_config_get_column_definition(&config->column_config, column);
-    csv2xlsx_cell_value cell_value = csv2xlsx_convert_value(value, column_definition->type, config->auto_convert); // TODO: HEADER SHOULD IGNORE THIS
+    bool header = row < config->header_row_count;
+    csv2xlsx_cell_type type = header ? CSV2XLSX_CELL_TYPE_TEXT : column_definition->type;
+    csv2xlsx_cell_value cell_value = csv2xlsx_convert_value(value, type, config->auto_convert);
     lxw_format *format;
-    format = get_column_format(column_definition, format_set, cell_value.type, config->header_row_count > row);
+    format = get_column_format(column_definition, format_set, cell_value.type, header);
     const char *number_format = format->num_format;
     bool adjust_width = column_definition->width == CSV2XLSX_WIDTH_AUTO;
     lxw_error error;
@@ -810,6 +797,16 @@ bool csv2xlsx_parse_column_definition_column(const char* text, int* column) {
         return false;
     }
 
+    if ((value + 1) > CSV2XLST_MAX_COLUMNS) {
+        csv2xlsx_set_last_error(
+            "Unable to parse column definition. Column number %d exceeds the maximum number of %d columns.",
+            value,
+            CSV2XLST_MAX_COLUMNS
+        );
+
+        return false;
+    }
+
     *column = (int) value;
 
     return true;
@@ -1090,6 +1087,20 @@ char *csv2xlsx_string_trim_left(char *text) {
     }
 
     return text;
+}
+
+unsigned int csv2xlsx_int_length(int value) {
+    if (value == 0) {
+        return 1;
+    }
+
+    int length = (unsigned int) log10(abs(value)) + 1;
+
+    if (value < 0) {
+        length++;
+    }
+
+    return length;
 }
 
 size_t csv2xlsx_string_trim_right_length(const char* text) {
